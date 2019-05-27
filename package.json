@@ -1,0 +1,21 @@
+{
+  "name": "model-viewer-demos",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Carlos Araya <carlos.araya@gmail.com> (https://publishing-project.rivendellweb.net/)",
+  "license": "MIT",
+  "dependencies": {
+    "@google/model-viewer": "^0.3.1",
+    "@webcomponents/webcomponentsjs": "^2.2.10",
+    "fullscreen-polyfill": "^1.0.2",
+    "intersection-observer": "^0.7.0",
+    "prismjs": "^1.16.0",
+    "resize-observer-polyfill": "^1.5.1"
+  },
+  "devDependencies": {},
+  "description": ""
+}

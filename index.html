@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>&lt;model-viewer&gt; demo</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./node_modules/prismjs/themes/prism.css">
+  <link rel="stylesheet" href="./node_modules/prismjs/themes/prism-solarizedlight.css">
+
+  <script src="./node_modules/prismjs/prism.js"></script>
+  <!-- 🚨 REQUIRED: Web Components polyfill to support Edge < 75 and Firefox < 63 -->
+  <script src="./node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <!-- 💁 OPTIONAL: Intersection Observer polyfill for better performance in Safari and IE11 -->
+  <script src="./node_modules/intersection-observer/intersection-observer.js"></script>
+  <!-- 💁 OPTIONAL: Resize Observer polyfill improves resize behavior in non-Chrome browsers -->
+  <script src="./node_modules/resize-observer-polyfill/dist/ResizeObserver.js"></script>
+  <!-- 💁 OPTIONAL: Fullscreen polyfill is required for experimental AR features in Canary -->
+  <script src="./node_modules/fullscreen-polyfill/dist/fullscreen.polyfill.js"></script>
+</head>
+<body>
+<div class="content">
+
+  <h1><code>&lt;model-viewer&gt;</code></h1>
+
+  <p>An interesting tool I saw at SFHTML5 is <code>&lt;model-viewer&gt;</code>, a web component-based tool that will display 3D content in a 2D hosting page.</p>
+
+  <p><code>&lt;model-viewer&gt;</code> provides a way to view 3D content in a web browser, independently of the form factor you're using (either a 2d Desktop browser or the browser built into a 3D device like the Oculus Quest). It is a web component so we need to polyfill web components for older versions of Edge and Firefox.</p>
+
+  <p>In the video below, Chris Joel, from the DeviceXR at Google explains <code>&lt;model-viewer&gt;</code>, what it is and how it works.<p>
+
+<div class="video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/lsScEabNutA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+This assumes that we've loaded the polyfills using NPM. This is not an absolute requirement. You can always load the script from a CDN but, I prefer to have the scripts in my local directory
+
+<pre><code class="language-bash">npm i @google/model-viewer \
+@webcomponents/webcomponentsjs \
+fullscreen-polyfill \
+intersection-observer \
+resize-observer-polyfill
+</code></pre>
+
+I normally put the scripts at the bottom of the page, before the closing body tag and before loading the model viewer scripts.
+
+
+<pre><code class="language-html">&lt;!--
+  webcomponents-loader is required to support older
+  versions of Edge and FIrefox
+-->
+&lt;script src="./js/webcomponents-loader.js">&lt;/script>
+&lt;script src="./js/intersection-observer.js">&lt;/script>
+&lt;script src="./js/ResizeObserver.js">&lt;/script>
+&lt;!--
+  Fullscreen polyfill is required for experimental
+  AR features in Canary
+-->
+&lt;script src="./js/fullscreen.polyfill.js">&lt;/script>-->
+
+&lt;!--
+  Magic Leap support
+-->
+&lt;script src="./js/prismatic.js">&lt;/script></code></pre>
+
+After we load the polyfills, we can load the <code>&lt;model-viewer&gt;</code> scripts. We use modules to load the scripts in modern browsers and `nomodule` to load a different script for those browsers that don't support modules.
+
+<pre><code class="language-html">&lt;script type="module" src="./js/model-viewer.js">&lt;/script>
+&lt;script nomodule src="./js/model-viewer-legacy.js">&lt;/script>  </code></pre>
+
+Once we have all the scripts installed we can use <code>&lt;model-viewer&gt;</code> by creating one or more instces of the custom element like show in the example below:
+
+<pre><code class="language-html">&lt;model-viewer
+    src="./models/2CylinderEngine.gltf"
+    alt="A 3D model of a 2 cylinder"
+    auto-rotate
+    camera-controls>&lt;/model-viewer></code></pre>
+
+  <p>The example will produce the following result:</p>
+
+  <model-viewer src="./models/2CylinderEngine.gltf" alt="A 3D model of a 2 cylinder engine" auto-rotate camera-controls></model-viewer>
+
+  <p>You can have as many instances of <code>&lt;model-viewer&gt;</code> as you need on your page.</p>
+
+  <model-viewer src="./models/2CylinderEngine.gltf" alt="A 3D model of a 2 cylinder engine" auto-rotate camera-controls background-color="#455A64"></model-viewer>
+
+  <p>They can each be customized independently from each other. The two additional instances have different background colors. They can also be manipulated separately.</p>
+
+  <model-viewer src="./models/2CylinderEngine.gltf" alt="A 3D model of a 2 cylinder engine" auto-rotate camera-controls background-color=rebeccapurple></model-viewer>
+
+  <p>We can also load multiple models</p>
+
+  <model-viewer src="./models/Commodore_64_01.gltf" alt="3D Commodore 64" camera-controls></model-viewer>
+
+  <p>But the more intriguing, to me, thing about <code>&lt;model-viewer&gt;</code> is how, with a few extra attributes you can provide a range of experiences, from mouse manipulation as show in the prior examples to full support for Google's ARCore, Apple's Quicklook (with some additional requirements),  and Magic Leap.</p>
+
+  <p>For example, adding the <code>ar</code> attribute will provide a way to launch Google's <a href="https://developers.google.com/ar/develop/java/scene-viewer">Scene Viewer</a> in supported devices. See <a href="https://developers.google.com/ar/develop/java/scene-viewer#using_model-viewer_to_launch_scene_viewer">Using <code>&lt;model-viewer&gt;</code> to launch Scene Viewer</a> for more information.</p>
+
+  <p>The code now looks like this:</p>
+
+  <pre><code class="language-html">&lt;model-viewer
+    src="./models/Satellite(1).gltf"
+    alt="3D Satellite"
+    ar
+    camera-controls</code></pre>
+
+  <p>The model looks like this. It won't look any different in desktop or devices where Scene Viewer is not supported but, in devices where the feature is supported, users will have an option to click on to place an interact with the object.</p>
+
+  <model-viewer src="./models/Satellite(1).gltf" alt="3D Satellite" camera-controls auto-rotate></model-viewer>
+
+
+  <p>Apple provides its own AR experiences on <a href="https://www.apple.com/ios/augmented-reality/">supported iOS 12+ devices</a> via <a href="https://developer.apple.com/videos/play/wwdc2018/603/">AR Quick Look</a> on Safari. This requires an additional <a href="https://graphics.pixar.com/usd/docs/Usdz-File-Format-Specification.html">USDZ</a> model which will be used only in supported iOS devices.</p>
+
+  <p>If you have the USDZ model, you can add it to your experience using the <code>ios-src</code>attribute and the URL to the model.</p>
+
+  <pre><code class="language-html">&lt;model-viewer
+    src="./models/Diner.gltf"
+    alt="3D Diner"
+    camera-controls
+    ios-src="./models/Diner.usdz">&lt;/model-viewer></code></pre>
+
+  <model-viewer src="./models/Diner.gltf" alt="3D Diner" camera-controls ios-src="./models/Diner.usdz"></model-viewer>
+
+  <p>And, of course, you can provide support for both, using <code>ar</code> and <code>ios-src</code> together to cover both Android and iOS in the same element</p>
+
+  <pre><code class="language-html">&lt;model-viewer
+    src="./models/Diner.gltf"
+    alt="3D Diner"
+    camera-controls
+    ar
+    ios-src="./models/Diner.usdz">&lt;/model-viewer></code></pre>
+
+  <model-viewer src="./models/Diner.gltf" alt="3D Diner" camera-controls ar ios-src="./models/Diner.usdz"></model-viewer>
+
+  <h2>Conclusion</h2>
+
+  <p>This barely begins to scratch the surface of what we can do with &lt;model-viewer>. See the <a href="https://googlewebcomponents.github.io/model-viewer/">documentation</a> for more information on what you can do and how you can expand your 3D experiences on the web.</p>
+
+  <p>For more information</p>
+
+  <h2>Credits</h2>
+
+  <p>Commodore by <a href="https://poly.google.com/view/dmKM7ChEVAL" rel="nofollow">Poly</a>,licensed under <a href="https://creativecommons.org/licenses/by/2.0/" rel="nofollow">CC-BY</a> (<a href="https://poly.google.com/view/dmKM7ChEVAL" rel="nofollow">source</a>)</p>
+
+  <p>Satellite by <a href="https://poly.google.com/view/1C3zb8Q9USk" rel="nofollow">Poly</a>, licensed under <a href="https://creativecommons.org/licenses/by/2.0/" rel="nofollow">CC-BY</a> (<a href="https://poly.google.com/view/1C3zb8Q9USk" rel="nofollow">source</a>)</p>
+
+  <p>Dinning car by <a href="https://poly.google.com/view/5teci4b6krG" rel="nofollow">Poly</a>, licensed under <a href="https://creativecommons.org/licenses/by/2.0" rel="nofollow">CC-BY</a> (<a href="https://poly.google.com/view/5teci4b6krG" rel="nofollow">Source</a></p>
+</div>
+
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+  <script nomodule
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+</body>
+</html>
