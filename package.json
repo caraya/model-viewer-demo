@@ -9,7 +9,7 @@
   "author": "Carlos Araya <carlos.araya@gmail.com> (https://publishing-project.rivendellweb.net/)",
   "license": "MIT",
   "dependencies": {
-    "@google/model-viewer": "^0.3.1",
+    "@google/model-viewer": "^3.1.1",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "fullscreen-polyfill": "^1.0.2",
     "intersection-observer": "^0.7.0",
